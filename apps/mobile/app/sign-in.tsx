@@ -5,7 +5,7 @@ import { Button, ErrorText, Field, screen } from "../src/components/ui";
 import { DEFAULT_API_URL, useSession } from "../src/session";
 
 export default function SignIn() {
-  const { session, signIn } = useSession();
+  const { session, signIn, startDemo } = useSession();
   const [name, setName] = useState("");
   const [url, setUrl] = useState(DEFAULT_API_URL);
   const [error, setError] = useState<string | null>(null);
@@ -43,6 +43,10 @@ export default function SignIn() {
       />
       <ErrorText text={error} />
       <Button label={busy ? "Connecting..." : "Continue"} onPress={() => void submit()} disabled={busy} />
+      <Text style={[screen.muted, { marginTop: 24, marginBottom: 8 }]}>
+        No server? Try the app with a made-up group. Everything stays on this device.
+      </Text>
+      <Button kind="secondary" label="Try the demo" onPress={() => void startDemo()} />
     </ScrollView>
   );
 }

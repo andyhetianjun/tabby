@@ -79,6 +79,7 @@ export default function GroupDetail() {
         ))}
       </Card>
       <Button label="Add expense" onPress={() => router.push({ pathname: "/group/[id]/add-expense", params: { id } })} />
+      <Button kind="secondary" label="Split a receipt by items" onPress={() => router.push({ pathname: "/group/[id]/add-receipt", params: { id } })} />
       <Button kind="secondary" label="Settle up" onPress={() => router.push({ pathname: "/group/[id]/settle", params: { id } })} />
 
       <Text style={screen.heading}>Expenses</Text>

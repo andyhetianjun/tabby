@@ -18,6 +18,7 @@ export default function RootLayout() {
         <Stack.Screen name="sign-in" options={{ title: "Tabby", headerBackVisible: false }} />
         <Stack.Screen name="group/[id]/index" options={{ title: "Group" }} />
         <Stack.Screen name="group/[id]/add-expense" options={{ title: "Add expense" }} />
+        <Stack.Screen name="group/[id]/add-receipt" options={{ title: "Split a receipt" }} />
         <Stack.Screen name="group/[id]/settle" options={{ title: "Settle up" }} />
       </Stack>
     </SessionProvider>

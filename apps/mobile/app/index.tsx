@@ -9,12 +9,12 @@ export default function GroupList() {
   const { ready, session } = useSession();
   if (!ready) return <ActivityIndicator style={{ marginTop: 40 }} />;
   if (!session) return <Redirect href="/sign-in" />;
-  return <Groups userName={session.userName} />;
+  return <Groups userName={session.userName} demo={session.demo === true} />;
 }
 
-function Groups({ userName }: { userName: string }) {
+function Groups({ userName, demo }: { userName: string; demo: boolean }) {
   const client = useClient();
-  const { signOut } = useSession();
+  const { signOut, resetDemo, demoOnly } = useSession();
   const router = useRouter();
   const groups = useRemote("groups", useCallback(() => client.listGroups(), [client]));
   const [name, setName] = useState("");
@@ -34,7 +34,11 @@ function Groups({ userName }: { userName: string }) {
 
   return (
     <ScrollView contentContainerStyle={screen.page} keyboardShouldPersistTaps="handled">
-      <Text style={screen.muted}>Signed in as {userName}</Text>
+      {demo ? (
+        <Banner text="Demo mode: no server. The people and amounts are made up and are saved only on this device." />
+      ) : (
+        <Text style={screen.muted}>Signed in as {userName}</Text>
+      )}
       {groups.offline ? <Banner text="You are offline. Showing the last saved list." /> : null}
       <ErrorText text={error ?? groups.error} />
 
@@ -66,7 +70,8 @@ function Groups({ userName }: { userName: string }) {
       <Button kind="secondary" label="Join group" disabled={code.trim().length < 4} onPress={() => void run(() => client.joinGroup(code.trim()))} />
 
       <View style={{ marginTop: 24 }}>
-        <Button kind="secondary" label="Sign out" onPress={() => void signOut()} />
+        {demo ? <Button kind="secondary" label="Reset demo data" onPress={() => void resetDemo()} /> : null}
+        {demoOnly ? null : <Button kind="secondary" label={demo ? "Leave demo" : "Sign out"} onPress={() => void signOut()} />}
       </View>
     </ScrollView>
   );
