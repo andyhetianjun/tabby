@@ -1,6 +1,6 @@
 import { formatMoney, type CreateExpenseBody, type Member } from "@tabby/core";
 import { useMemo, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { buildReceiptExpense, type ReceiptFormState } from "../lib/receiptForm";
 import { colors } from "../theme";
 import { Button, Card, Chip, ErrorText, Field } from "./ui";

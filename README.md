@@ -1,5 +1,7 @@
 I built Tabby, a shared-expenses app for your phone, because I wanted to learn how to build a phone app from start to finish. Splitting shared costs is a small problem with a surprisingly tricky core: rounding cents fairly, and working out the fewest payments that settle everyone up.
 
+**Try it:** [andyhetianjun.github.io/tabby](https://andyhetianjun.github.io/tabby/) runs the app in your browser with a made-up group, no server needed.
+
 [![CI](https://github.com/andyhetianjun/tabby/actions/workflows/ci.yml/badge.svg)](https://github.com/andyhetianjun/tabby/actions/workflows/ci.yml)
 
 ## What it does
@@ -10,6 +12,13 @@ The two tricky parts:
 
 - **Cents.** $10.00 split three ways cannot be three equal amounts. Tabby stores money as whole cents (never decimals, which drift) and hands the leftover cent to someone, so the result is $3.34, $3.33, $3.33 and always adds back to exactly $10.00.
 - **Settling up.** If four people owe each other money, you do not need a payment per debt. Tabby nets everything out and proposes few payments, never more than (people who owe or are owed) minus one. Finding the true minimum is a harder problem, so in rare cases it uses one more payment than the best possible answer.
+
+## Features
+
+- [Demo mode](docs/demo-mode.md): the app runs with no server, using the same split code on the device, with a made-up group to tap through. This is the live site above.
+- [Splitting a receipt by items](docs/receipt-itemizing.md): assign each item to the people who shared it, and share tax and tip in proportion, with cents rounded fairly.
+
+![Tabby in demo mode](docs/img/demo.png)
 
 ## How to use it
 
@@ -73,22 +82,23 @@ What I last ran on my machine:
 
 | Suite | Command | Result |
 | --- | --- | --- |
-| core (money, splitting, balances, settle-up, property tests) | `npm test -w @tabby/core` | 34 passed |
+| core (money, splitting, receipts, balances, settle-up, property tests) | `npm test -w @tabby/core` | 41 passed |
 | API integration tests (in-memory SQLite) | `npm test -w @tabby/api` | 16 passed |
 | API integration tests against Postgres 16 | `TEST_DATABASE_URL=... npm test -w @tabby/api` | 16 passed |
-| mobile (React Native Testing Library) | `npm test -w @tabby/mobile` | 17 passed |
+| mobile (React Native Testing Library, local data layer) | `npm test -w @tabby/mobile` | 32 passed |
 
 The property tests generate 100 random cases per property. They check that shares always add up to the total and stay within one cent of the exact share, that equal splits differ by at most one cent, that group balances sum to zero, and that applying the settle-up payments brings every balance to zero using at most n-1 payments. `TEST_DATABASE_URL` empties the database it points at, so use a throwaway one.
 
-CI (`.github/workflows/ci.yml`) runs lint, typecheck, tests and the web export, and runs the API tests again against a Postgres service.
+CI (`.github/workflows/ci.yml`) runs lint, typecheck, tests and the web export, and runs the API tests again against a Postgres service. `.github/workflows/pages.yml` builds the demo site and publishes it on GitHub Pages.
 
-Untested: I have not run the app on a physical phone or a simulator. What I verified is the web export, the tests, and the server over HTTP.
+Untested: I have not run the app on a physical phone or a simulator. What I verified is the web export, the tests, the server over HTTP, and the demo site in headless Chrome (see [demo mode](docs/demo-mode.md)).
 
 ## What I'd do next
 
 - Rotate who gets the leftover cent so the same person is not always first.
 - Real sign-in and a way to recover a lost token.
 - Edit an expense instead of delete and re-add.
+- Uneven sharing of a single receipt item, and tax and tip as percentages.
 - Let the offline queue also hold payments and deletes.
 - Per-expense currency and conversion.
 - Pagination for long expense lists.
