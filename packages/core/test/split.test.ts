@@ -1,6 +1,6 @@
 import fc from "fast-check";
 import { describe, expect, it } from "vitest";
-import { allocate, splitExpense, SplitError } from "../src";
+import { allocate, splitExpense, SplitError, type SplitInput } from "../src";
 
 const sum = (xs: { amount: number }[]) => xs.reduce((a, b) => a + b.amount, 0);
 
@@ -72,7 +72,7 @@ describe("percent split", () => {
 
 describe("validation", () => {
   it("rejects zero, negative and fractional totals", () => {
-    const input = { type: "equal", memberIds: ["a"] } as const;
+    const input: SplitInput = { type: "equal", memberIds: ["a"] };
     expect(() => splitExpense(0, input)).toThrow();
     expect(() => splitExpense(-5, input)).toThrow();
     expect(() => splitExpense(1.5, input)).toThrow();

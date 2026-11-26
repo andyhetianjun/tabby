@@ -13,7 +13,7 @@ export function assertCents(value: number, label = "amount"): asserts value is C
 /** Number of decimal places the currency uses (2 for CAD/USD, 0 for JPY). */
 export function minorUnits(currency: string): number {
   return new Intl.NumberFormat("en", { style: "currency", currency }).resolvedOptions()
-    .maximumFractionDigits;
+    .maximumFractionDigits ?? 2;
 }
 
 /**
