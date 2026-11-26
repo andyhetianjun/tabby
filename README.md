@@ -20,7 +20,21 @@ The two tricky parts:
 - [Demo mode](docs/demo-mode.md): the app runs with no server, using the same split code on the device, with a made-up group to tap through. This is the live site above.
 - [Splitting a receipt by items](docs/receipt-itemizing.md): assign each item to the people who shared it, and share tax and tip in proportion, with cents rounded fairly.
 
-![Tabby in demo mode](docs/img/demo.png)
+![Adding an expense, splitting a receipt and settling up in the demo](docs/img/demo.gif)
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Phone app] -->|same calls| B{Server or demo?}
+    B -->|server| C[API + database]
+    B -->|demo mode| D[Local storage on the device]
+    C --> E[core: split, balance, settle up]
+    D --> E
+    A --> E
+```
+
+The `core` package holds all the money rules, so the app, the server and the browser demo cannot disagree about a split.
 
 ## How to use it
 
