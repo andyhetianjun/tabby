@@ -1,3 +1,5 @@
+# tabby
+
 I built Tabby, a shared-expenses app for your phone, because I wanted to learn how to build a phone app from start to finish. Splitting shared costs is a small problem with a surprisingly tricky core: rounding cents fairly, and working out the fewest payments that settle everyone up.
 
 **Try it:** [andyhetianjun.github.io/tabby](https://andyhetianjun.github.io/tabby/) runs the app in your browser with a made-up group, no server needed.
