@@ -13,7 +13,9 @@ async function setup() {
   const group = g.body;
   await call(ctx.app, ann.token, "POST", `/groups/${group.id}/members`, { name: "Ben" });
   const full = (await call<Group>(ctx.app, ann.token, "POST", `/groups/${group.id}/members`, { name: "Cat" })).body;
-  const [a, b, c] = full.members.map((m) => m.id) as [string, string, string];
+  // Members added in the same millisecond can come back in any order, so look them up by name.
+  const id = (name: string) => full.members.find((m) => m.name === name)!.id;
+  const [a, b, c] = [id("Ann"), id("Ben"), id("Cat")];
   return { ann, group: full, a, b, c };
 }
 
